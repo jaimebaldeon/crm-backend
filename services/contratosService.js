@@ -56,3 +56,10 @@ exports.saveContrato = async (contratoData) => {
   }
 
 };
+
+// Fetch contratos for a specific client id search from the database
+exports.getContratosByClientId = async (clientId) => {
+  const query = `SELECT * FROM contratos WHERE id_cliente = $1`;
+  const result = await pool.query(query, [clientId]);
+  return result.rows;
+};

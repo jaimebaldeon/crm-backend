@@ -2,7 +2,7 @@ const express = require('express');
 const extintoresController = require('../controllers/extintoresController');
 const router = express.Router();
 
-// Route to fetch tipo extintor data
+// Ruta que guarda nuevos activos de un cliente/contrato
 router.post('/', extintoresController.submitExtintoresForm);
 
 // Ruta que devuelve los extintores caducados de un cliente/contrato

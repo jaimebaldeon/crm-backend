@@ -14,3 +14,13 @@ exports.submitContractForm = async (req, res) => {
       }
     }
   };
+
+  exports.getContratos = async (req, res) => {
+    try {
+      const data = await contratosService.getContratosByClientId(req.query.clientId);
+      res.json(data);
+    } catch (err) {
+      console.error('Error fetching contratos:', err);
+      res.status(500).send('Server Error');
+    }
+  };
