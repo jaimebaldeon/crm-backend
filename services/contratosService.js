@@ -2,7 +2,7 @@ const pool = require('../config/db');
 
 exports.saveContrato = async (contratoData) => {
   const {
-    clientId,
+    id_cliente,
     products,
     hasExtintores,
     tipo,
@@ -30,10 +30,10 @@ exports.saveContrato = async (contratoData) => {
   `;
 
   const values = [
-    clientId,
-    JSON.stringify(productosServicios),              // Stringify the array of product names
-    JSON.stringify(cantidades),                      // Stringify the array of quantities
-    JSON.stringify(precios),
+    id_cliente,
+    productosServicios,              
+    cantidades,                     
+    precios,
     cuota,                                           
     tipo,                                         
     mes,                                     
@@ -62,4 +62,67 @@ exports.getContratosByClientId = async (clientId) => {
   const query = `SELECT * FROM contratos WHERE id_cliente = $1`;
   const result = await pool.query(query, [clientId]);
   return result.rows;
+};
+
+exports.updateContrato = async (contratoData) => {
+  const {
+    id_contrato,
+    id_cliente,
+    productos_servicios,
+    cantidades,
+    precios,
+    tipo,                                         
+    mes,                                     
+    año, 
+    fecha_fin, 
+    estado, 
+    notas_adicionales,
+    fecha_inicio
+  } = contratoData;
+
+  // Calculate cuota as the sum of the product of quantities and prices
+  const cuota = cantidades.reduce((total, cantidad, index) => total + (cantidad * precios[index]), 0);
+
+  const query = `
+    UPDATE contratos
+    SET 
+      id_cliente = $1,
+      productos_servicios = $2,
+      cantidades = $3,
+      precios = $4,
+      cuota = $5,
+      tipo = $6,
+      mes = $7,
+      año = $8,
+      fecha_fin = $9,
+      estado = $10,
+      notas_adicionales = $11,
+      fecha_inicio = $12
+    WHERE id_contrato = $13
+    RETURNING *;
+  `;
+
+  const values = [
+    id_cliente,
+    productos_servicios,              
+    cantidades,                      
+    precios,
+    cuota,                                           
+    tipo,                                         
+    mes,                                     
+    año,                                            
+    fecha_fin, 
+    estado, 
+    notas_adicionales,
+    fecha_inicio,
+    id_contrato,           
+  ];
+  
+  try {
+    const result = await pool.query(query, values);
+    return result.rows[0]; // Return the inserted contrato ID
+  } catch (error) {
+      throw new Error('Fallo al actualizar el contrato');
+  }
+
 };

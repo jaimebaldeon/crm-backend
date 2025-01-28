@@ -1,10 +1,10 @@
 const extintoresService = require('../services/extintoresService');
 
-exports.submitExtintoresForm = async (req, res) => {
+exports.saveActivos = async (req, res) => {
     try {
-      const extintoresData = req.body.extintoresData; // Retrieve the form data from request body
+      const activosData = req.body.activosData; // Retrieve the form data from request body
       const contratoId = req.body.contratoId; // Retrieve the form data from request body
-      const result = await extintoresService.saveExtintores(extintoresData, contratoId); // Pass the data to the service
+      const result = await extintoresService.saveActivos(activosData, contratoId); // Pass the data to the service
       res.status(201).json({ message: 'Contract form submitted successfully', extintoresId: result });
     } catch (error) {
       if (error.message === 'Extintores ya existe en la base de datos') {
@@ -46,5 +46,28 @@ exports.updateExtintoresRetimbrados = async (req, res) => {
   } catch (error) {
     console.error('Error actualizando extintores retimbrados:', err);
     res.status(500).json({ message: 'Fallo actualizando extintores retimbrados' });
+  }
+};
+
+exports.getExtintores = async (req, res) => {
+  try {
+    const extintoresData = req.query; // Retrieve the form data from request query
+    const data = await extintoresService.getExtintores(extintoresData); // Pass the data to the service
+    res.status(201).json(data);
+  } catch (error) {
+    console.error('Error leyendo extintores caducados:', err);
+    res.status(500).json({ message: 'Fallo al leer extintores caducados' });
+  }
+};
+
+exports.updateActivos = async (req, res) => {
+  try {
+    const activosData = req.body.activosData; 
+    const contratoId = req.body.contratoId;
+    const data = await extintoresService.updateActivos(activosData, contratoId); 
+    res.status(201).json({ message: 'Extintores actualizados correctamente', extintoresActualizados: data });
+  } catch (error) {
+    console.error('Error actualizando extintores:', error);
+    res.status(500).json({ message: 'Fallo actualizando extintores' });
   }
 };
