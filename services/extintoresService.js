@@ -82,7 +82,13 @@ exports.getExtintoresCaducados = async (extintoresData) => {
 };
 
 exports.getExtintores = async (extintoresData) => {
-  const query = `SELECT * FROM activos WHERE id_contrato = $1 AND estado = 'ACTIVO'`;
+  const query = `
+    SELECT * 
+    FROM activos 
+    WHERE id_contrato = $1 
+      AND estado = 'ACTIVO' 
+      AND nombre ILIKE '%extintor%'
+  `;
   const result = await pool.query(query, [extintoresData.contratoId]);
   return result.rows;
 };
