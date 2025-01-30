@@ -14,3 +14,14 @@ exports.submitClientForm = async (req, res) => {
       }
     }
   };
+
+  exports.updateCliente = async (req, res) => {
+    try {
+      const clienteData = req.body; 
+      const result = await clientesService.updateCliente(clienteData); 
+      res.json(result);
+    } catch (error) {
+      console.error('Error actualizando cliente:', error);
+      res.status(500).send('Server Error');
+    }
+  };

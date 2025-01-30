@@ -18,7 +18,7 @@ const productosRoutes = require('./productos');
 const router = express.Router();
 
 router.use('/dashboard', dashboardRoutes);
-router.use('/tipoEstablecimiento', tipoEstablecimientoRoutes);
+router.use('/categoria-establecimiento', tipoEstablecimientoRoutes);
 router.use('/clientes', clientesRoutes);
 router.use('/productos-mantenibles', productosManteniblesRoutes);
 router.use('/contratos', contratosRoutes);
