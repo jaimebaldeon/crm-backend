@@ -308,7 +308,7 @@ async function generateAlbaranDocument(contract, client, activosCliente, product
       const output = doc.getZip().generate({ type: 'nodebuffer' });
   
       // Define the output path
-      const outputDirectory = path.join(__dirname, `../albaranes/${year}/${month}`);
+      const outputDirectory = path.join(__dirname, `../albaranes/${year}/${contract.mes}`);
       await fs.ensureDir(outputDirectory);
       const outputPath = path.join(outputDirectory, `albaran_${client.nombre}_${client.id_cliente}.docx`);
   
