@@ -75,8 +75,28 @@ exports.saveActivos = async (activosData, contratoId) => {
 };
 
 
+exports.getExtintoresNuevos = async (extintoresData) => {
+  const query = `
+    SELECT * 
+    FROM activos 
+    WHERE id_contrato = $1 
+      AND fecha_fabricacion = EXTRACT(YEAR FROM CURRENT_DATE) 
+      AND estado = 'ACTIVO'
+      AND nombre ILIKE '%extintor%'
+  `;
+  const result = await pool.query(query, [extintoresData.contratoId]);
+  return result.rows;
+};
+
 exports.getExtintoresCaducados = async (extintoresData) => {
-  const query = `SELECT * FROM activos WHERE id_contrato = $1 AND fecha_fabricacion <= EXTRACT(YEAR FROM CURRENT_DATE) - 20 AND estado = 'ACTIVO'`;
+  const query = `
+    SELECT * 
+    FROM activos 
+    WHERE id_contrato = $1 
+      AND fecha_fabricacion <= EXTRACT(YEAR FROM CURRENT_DATE) - 20 
+      AND estado = 'ACTIVO'
+      AND nombre ILIKE '%extintor%'
+  `;
   const result = await pool.query(query, [extintoresData.contratoId]);
   return result.rows;
 };

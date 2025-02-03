@@ -16,6 +16,17 @@ exports.saveActivos = async (req, res) => {
     }
 };
 
+exports.getExtintoresNuevos = async (req, res) => {
+  try {
+    const extintoresData = req.query; // Retrieve the form data from request query
+    const data = await extintoresService.getExtintoresNuevos(extintoresData); // Pass the data to the service
+    res.status(201).json(data);
+  } catch (error) {
+    console.error('Error leyendo extintores nuevos:', err);
+    res.status(500).json({ message: 'Fallo al leer extintores nuevos' });
+  }
+};
+
 exports.getExtintoresCaducados = async (req, res) => {
     try {
       const extintoresData = req.query; // Retrieve the form data from request query

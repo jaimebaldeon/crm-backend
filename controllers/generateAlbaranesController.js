@@ -35,8 +35,8 @@ exports.generateAlbaranes = async (req, res) => {
 
           if (activosCliente.length === 0) {
               // Add client name to notification list if no assets are found
-              clientesSinActivos.push(client.name); // Assuming client.name holds the client’s name
-              console.log(`Saltando albaran de ${client.name} por falta de activos.`);
+              clientesSinActivos.push(client.nombre); // Assuming client.name holds the client’s name
+              console.log(`Saltando albaran de ${client.nombre} por falta de activos.`);
               continue; // Skip to the next contract in the loop
           }
           
@@ -82,25 +82,25 @@ exports.generateAlbaranes = async (req, res) => {
 
       // Notify about skipped clients
       if (clientesSinActivos.length > 0) {
-          console.log('Generacion de albaranes completada. Los siguientes clientes no tienen activos:');
+          console.log('Los siguientes clientes no tienen activos:');
           clientesSinActivos.forEach(clientName => console.log(`- ${clientName}`));
-          message += 'Generación de albaranes completada. Los siguientes clientes no tienen activos:\n';
+          message += 'Los siguientes clientes no tienen activos:\n';
           clientesSinActivos.forEach(clientName => {
               message += `- ${clientName}\n`;
           });
       } 
       if (clientesSinDatos.length > 0) {
-          console.log('Generacion de albaranes completada. Los siguientes clientes tienes activos incompletos:');
+          console.log('Los siguientes clientes tienes activos incompletos:');
           clientesSinDatos.forEach(clientName => console.log(`- ${clientName}`));
-          message += 'Generación de albaranes completada. Los siguientes clientes tienen activos incompletos:\n';
+          message += 'Los siguientes clientes tienen activos incompletos:\n';
           clientesSinDatos.forEach(clientName => {
               message += `- ${clientName}\n`;
           });
       }
       if (clientesIncorrectos.length > 0) {
-          console.log('Generacion de albaranes completada. Los siguientes clientes tienen datos incorrectos:');
+          console.log('Los siguientes clientes tienen datos incorrectos:');
           clientesIncorrectos.forEach(clientName => console.log(`- ${clientName}`));
-          message += 'Generación de albaranes completada. Los siguientes clientes tienen datos incorrectos:\n';
+          message += 'Los siguientes clientes tienen datos incorrectos:\n';
           clientesIncorrectos.forEach(clientName => {
               message += `- ${clientName}\n`;
           });

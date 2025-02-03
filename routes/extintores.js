@@ -20,4 +20,7 @@ router.get('/extintores', extintoresController.getExtintores);
 // Ruta que actualiza los extintores caducados de un cliente/contrato
 router.post('/update', extintoresController.updateActivos);
 
+// Ruta que devuelve los extintores nuevos de un cliente/contrato
+router.get('/nuevos', extintoresController.getExtintoresNuevos);
+
 module.exports = router;
