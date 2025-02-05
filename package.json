@@ -12,9 +12,11 @@
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
     "docxtemplater": "^3.52.0",
+    "exceljs": "^4.4.0",
     "express": "^4.21.1",
     "fs-extra": "^11.2.0",
     "pg": "^8.13.0",
-    "pizzip": "^3.1.7"
+    "pizzip": "^3.1.7",
+    "xlsx": "^0.18.5"
   }
 }

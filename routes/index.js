@@ -14,6 +14,7 @@ const deleteAlbaranRoutes = require('./deleteAlbaran');
 const searchClientesRoutes = require('./searchClientes')
 const productosServiciosNoManteniblesRoutes = require('./productosServiciosNoMantenibles');
 const productosRoutes = require('./productos');
+const facturasRoutes = require('./facturas');
 
 const router = express.Router();
 
@@ -32,6 +33,7 @@ router.use('/delete-albaran', deleteAlbaranRoutes);
 router.use('/search-clientes', searchClientesRoutes);
 router.use('/productos-servicios-no-mantenibles', productosServiciosNoManteniblesRoutes);
 router.use('/productos', productosRoutes);
+router.use('/facturas', facturasRoutes);
 
 
 module.exports = router;
