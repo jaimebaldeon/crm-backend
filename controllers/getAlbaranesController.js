@@ -1,4 +1,4 @@
-const { getAlbaranesByClientId } = require('../services/albaranesService');
+const { getAlbaranesByClientId, getAlbaran } = require('../services/albaranesService');
 
 exports.getAlbaranes = async (req, res) => {
   try {
@@ -10,6 +10,16 @@ exports.getAlbaranes = async (req, res) => {
     res.json(data);
   } catch (err) {
     console.error('Error fetching albaranes:', err);
+    res.status(500).send('Server Error');
+  }
+};
+
+exports.getAlbaran = async (req, res) => {
+  try {
+    const data = await getAlbaran(req.query.albaranId);
+    res.json(data);
+  } catch (err) {
+    console.error('Error fetching albaran:', err);
     res.status(500).send('Server Error');
   }
 };

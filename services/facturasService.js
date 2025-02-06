@@ -44,8 +44,8 @@ exports.getAlbaranesConFactura = async (month, year) => {
 
 exports.saveFactura = async (albaran) => {
   const query = `
-    INSERT INTO facturas (id_cliente, id_albaran, fecha)
-    VALUES ($1, $2, $3)
+    INSERT INTO facturas (id_cliente, id_albaran, fecha, cuota)
+    VALUES ($1, $2, $3, $4)
     RETURNING id_factura;
   `;
 
@@ -53,7 +53,8 @@ exports.saveFactura = async (albaran) => {
   const values = [
     albaran.id_cliente,          // ID Cliente proveniente del albarán
     albaran.id_albaran,          // ID Albarán
-    new Date().toISOString().split('T')[0] // Fecha en formato 'YYYY-MM-DD'
+    new Date().toISOString().split('T')[0], // Fecha en formato 'YYYY-MM-DD'
+    albaran.cuota * 1.21
   ];
 
   try {
@@ -164,4 +165,11 @@ exports.generateFacturaDocument = async (albaran, client, idFactura) => {
       console.error('Error generating factura document:', error);
       throw new Error('Failed to generate factura document');
     }
+}
+
+// Fetch facturas for a specific search from the database
+exports.getFacturasByClientId = async (clientId) => {
+  const query = `SELECT * FROM facturas WHERE id_cliente = $1`;
+  const result = await pool.query(query, [ clientId ]);
+  return result.rows;
 }

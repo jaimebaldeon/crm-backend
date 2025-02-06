@@ -20,5 +20,6 @@ build/
 .DS_Store
 Thumbs.db
 
-# Carpeta Albaranes
+# Carpeta Albaranes y Facturas
 albaranes/
+facturas/

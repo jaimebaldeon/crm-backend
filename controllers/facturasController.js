@@ -1,5 +1,5 @@
-const { getAlbaranesAceptadosByMonth, deleteAlbaranesPendientesByMonth, getClientByContract, generateAlbaranDocument, deriveMaintenance, insertAlbaranes, getContractPrices } = require('../services/albaranesService');
-const { getAlbaranesConFactura, saveFactura, generateFacturaDocument } = require('../services/facturasService');
+const { getAlbaranesAceptadosByMonth, getClientByContract } = require('../services/albaranesService');
+const { getAlbaranesConFactura, saveFactura, generateFacturaDocument, getFacturasByClientId } = require('../services/facturasService');
 
 exports.generateFacturas = async (req, res) => {
     const month = req.query.month;
@@ -61,3 +61,12 @@ exports.generateFacturas = async (req, res) => {
     }
   };
   
+  exports.getFacturas = async (req, res) => {
+    try {
+      const data = await getFacturasByClientId(req.query.clientId);
+      res.json(data);
+    } catch (err) {
+      console.error('Error fetching facturas:', err);
+      res.status(500).send('Server Error');
+    }
+  };
