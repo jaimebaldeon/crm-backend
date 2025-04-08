@@ -101,7 +101,7 @@ exports.getExtintoresCaducados = async (extintoresData) => {
   return result.rows;
 };
 
-exports.getExtintores = async (extintoresData) => {
+exports.getExtintores = async (id_contrato) => {
   const query = `
     SELECT * 
     FROM activos 
@@ -109,7 +109,7 @@ exports.getExtintores = async (extintoresData) => {
       AND estado = 'ACTIVO' 
       AND nombre ILIKE '%extintor%'
   `;
-  const result = await pool.query(query, [extintoresData.contratoId]);
+  const result = await pool.query(query, [id_contrato]);
   return result.rows;
 };
 
@@ -249,5 +249,26 @@ exports.updateActivos = async (activosData, contratoId) => {
     console.error('Error actualizando extintores data:', error);
     await pool.query('ROLLBACK'); // Rollback transaction on error
     throw new Error('Failed to update extintores data');
+  }
+};
+
+exports.getProvinciaProveedor = async (marca) => {
+  try {
+    const query = `
+      SELECT provincia 
+      FROM ref_provedores_extintores 
+      WHERE marca = $1 
+      LIMIT 1
+    `;
+    const result = await pool.query(query, [marca]);
+
+    if (result.rows.length === 0) {
+      return null; // o undefined
+    }
+
+    return result.rows[0].provincia;
+  } catch (error) {
+    console.error('Error obteniendo provincia:', error.message);
+    throw new Error('Error obteniendo provincia del proveedor');
   }
 };

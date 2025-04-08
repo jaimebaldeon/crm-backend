@@ -16,6 +16,7 @@ const productosServiciosNoManteniblesRoutes = require('./productosServiciosNoMan
 const productosRoutes = require('./productos');
 const facturasRoutes = require('./facturas');
 const albaranesRoutes = require('./albaranes');
+const certificadosRoutes = require('./certificados');
 
 const router = express.Router();
 
@@ -36,6 +37,7 @@ router.use('/productos-servicios-no-mantenibles', productosServiciosNoMantenible
 router.use('/productos', productosRoutes);
 router.use('/facturas', facturasRoutes);
 router.use('/albaranes', albaranesRoutes);
+router.use('/certificados', certificadosRoutes);
 
 
 module.exports = router;

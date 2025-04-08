@@ -1,0 +1,14 @@
+const express = require('express');
+const certificadosController = require('../controllers/certificadosController');
+const router = express.Router();
+
+// Ruta que genera las certificados de un mes esecificado
+router.get('/generate-certificados', certificadosController.generateCertificados);
+
+// Ruta que devuelve las certificados de un cliente
+router.get('/get-certificados', certificadosController.getCertificados);
+
+// Ruta que actualiza la certificado de un cliente
+router.post('/update-certificado', certificadosController.updateCertificado);
+
+module.exports = router;

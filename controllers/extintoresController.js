@@ -63,7 +63,7 @@ exports.updateExtintoresRetimbrados = async (req, res) => {
 exports.getExtintores = async (req, res) => {
   try {
     const extintoresData = req.query; // Retrieve the form data from request query
-    const data = await extintoresService.getExtintores(extintoresData); // Pass the data to the service
+    const data = await extintoresService.getExtintores(extintoresData.contratoId); // Pass the data to the service
     res.status(201).json(data);
   } catch (error) {
     console.error('Error leyendo extintores caducados:', err);

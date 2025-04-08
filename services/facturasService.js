@@ -173,3 +173,48 @@ exports.getFacturasByClientId = async (clientId) => {
   const result = await pool.query(query, [ clientId ]);
   return result.rows;
 }
+
+// Update factura
+exports.updateFactura = async (facturaData) => {
+  const {
+    id_factura,
+    id_cliente,
+    id_albaran,
+    fecha,
+    cantidades,
+    precios
+  } = facturaData;
+
+  const query = `
+    UPDATE facturas
+    SET 
+      id_cliente = $1,
+      id_albaran = $2,
+      fecha = $3,
+      cuota = $4
+    WHERE id_factura = $5
+    RETURNING *;
+  `;
+
+  const calcularTotalCuota = (cantidades, precios) => {
+    const cantidadArray = cantidades.map(Number); // Ensure all quantities are numbers
+    const precioArray = precios.map(Number); // Ensure all prices are numbers
+    return cantidadArray.reduce((total, cantidad, i) => total + cantidad * precioArray[i], 0);
+  };
+
+  const values = [
+    id_cliente,
+    id_albaran,
+    fecha,
+    calcularTotalCuota(cantidades, precios),
+    id_factura,
+  ];
+  
+  try {
+    const result = await pool.query(query, values);
+    return result.rows[0]; // Return the inserted contrato ID
+  } catch (error) {
+      throw new Error('Fallo al actualizar el contrato');
+  }
+
+};
