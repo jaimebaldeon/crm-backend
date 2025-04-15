@@ -113,6 +113,18 @@ exports.getExtintores = async (id_contrato) => {
   return result.rows;
 };
 
+exports.getOtrosActivos = async (id_contrato) => {
+  const query = `
+    SELECT * 
+    FROM activos 
+    WHERE id_contrato = $1 
+      AND estado = 'ACTIVO' 
+      AND nombre NOT ILIKE '%extintor%'
+  `;
+  const result = await pool.query(query, [id_contrato]);
+  return result.rows;
+};
+
 exports.updateExtintoresCaducados = async (extintoresData) => {
   const query = `
     UPDATE activos

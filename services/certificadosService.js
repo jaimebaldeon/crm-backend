@@ -41,9 +41,9 @@ exports.saveCertificado = async (albaran) => {
 
 
 // Generate an albaran document and save it to a directory
-exports.generateCertificadoDocument = async (albaran, extintores, client, idCertificado) => {
+exports.generateCertificadoDocument = async (albaran, extintores, otrosActivos, client, idCertificado) => {
     try {
-      // Load the DOCX template file
+      // Load the XLSX template file
       const templatePath = path.join(__dirname, '../templates/plantilla_certificado.xlsx');
   
       // Cargar el archivo Excel
@@ -82,26 +82,108 @@ exports.generateCertificadoDocument = async (albaran, extintores, client, idCert
         }
       }
 
-      // Insertar datos extintores retimbrados
+      // Insertar extintores retimbrados
       if (contadorRetimbrados > 0) {
         ultimaFila = ultimaFila + 2; 
         hojaCertificado.getCell(`B${ultimaFila}`).value = `Se ha realizado la prueba de presión quinquenal a ${contadorRetimbrados} extintor(es) portátil(es).`;
         hojaCertificado.getCell(`B${ultimaFila}`).alignment = { horizontal: 'left' };
       }
 
-      // Insertar datos BIES
+      // Insertar Otros Activos
+      otrosActivos.forEach((activo, index) => {
 
-      // Insertar datos Central PCI
+        // Insertar Alumbrado Emergencia
+        if (activo.nombre && activo.nombre === 'ALUMBRADOS DE EMERGENCIA' ) {
+          ultimaFila = ultimaFila + 2; 
 
-      // Insertar datos Alumbrado Emergencia
+          // Titulo
+          hojaCertificado.getCell(`B${ultimaFila}`).value = 'ALUMBRADO DE EMERGENCIA';
+          hojaCertificado.getCell(`B${ultimaFila}`).font = {
+            bold: true,
+            underline: true
+          };
+          hojaCertificado.getCell(`B${ultimaFila}`).alignment = { horizontal: 'left' };
 
+          const mensaje = [
+            'Se ha realizado la revisión general de los alumbrados de emergencia en',
+            'lo relativo a su nivel de autonomía mínimo, para asegurar el buen estado',
+            'de funcionamiento según la norma UNE.EN 50172.'
+          ];
 
+          mensaje.forEach((linea, i) => {
+            const fila = ultimaFila + 1 + i; // Desplazar las líneas debajo del título
+            hojaCertificado.getCell(`B${fila}`).value = linea;
+            hojaCertificado.getCell(`B${fila}`).font = { bold: false, underline: false };
+            hojaCertificado.getCell(`B${fila}`).alignment = { horizontal: 'left' };
+          });
 
-      // Mantener el formato original
-      hojaCertificado.eachRow({ includeEmpty: true }, (row) => {
-        row.eachCell({ includeEmpty: true }, (cell) => {
-          cell.style = cell.style; // Mantener estilo de celda
-        });
+          ultimaFila += mensaje.length; // Actualizar la fila final
+        } 
+
+        // Insertar BIES
+        if ( activo.nombre && activo.nombre.includes('BOCAS DE INCENDIO') ) {
+          ultimaFila = ultimaFila + 2; 
+
+          // Titulo
+          hojaCertificado.getCell(`B${ultimaFila}`).value = 'BOCAS DE INCENDIO EQUIPADAS';
+          hojaCertificado.getCell(`B${ultimaFila}`).font = {
+            bold: true,
+            underline: true
+          };
+          hojaCertificado.getCell(`B${ultimaFila}`).alignment = { horizontal: 'left' };
+
+          const mensaje = [
+            'Se han realizado las operaciones de mantenimiento y verificaciones',
+            `correspondientes de las BIES de ${activo.nombre.slice(-4)} (bocas de incendio equipadas).`,
+            'No existen anomalías o deficiencias que impidan su correcto funcionamiento.'
+          ];
+
+          mensaje.forEach((linea, i) => {
+            const fila = ultimaFila + 1 + i; // Desplazar las líneas debajo del título
+            hojaCertificado.getCell(`B${fila}`).value = linea;
+            hojaCertificado.getCell(`B${fila}`).font = { bold: false, underline: false };
+            hojaCertificado.getCell(`B${fila}`).alignment = { horizontal: 'left' };
+          });
+
+          ultimaFila += mensaje.length; // Actualizar la fila final
+
+        }
+
+        // Insertar datos Central PCI
+        if ( activo.nombre && activo.nombre.includes('CENTRAL DETECCION DE INCENDIOS') ) {
+          ultimaFila = ultimaFila + 2; 
+
+          // Titulo
+          hojaCertificado.getCell(`B${ultimaFila}`).value = 'SISTEMA DE DETECCION ALARMA DE INCENDIOS';
+          hojaCertificado.getCell(`B${ultimaFila}`).font = {
+            bold: true,
+            underline: true
+          };
+          hojaCertificado.getCell(`B${ultimaFila}`).alignment = { horizontal: 'left' };
+
+          const mensaje = [
+            'Revisión de sistemas  detección de alarmas incendios compuesta de:',
+            '- Central de Incendios Convencional',
+            '- Detectores  ópticos de humos',
+            '- Pulsadores de alarma',
+            '- Sirena  acústica',
+            '- Fuente  alimentación  batería  2  amperios 12 voltios carga correcta',
+            '   24 voltios',
+            '- El funcionamiento de todos los equipos que componen este sistema',
+            '   están en perfecto estado de servicio'
+          ];
+
+          mensaje.forEach((linea, i) => {
+            const fila = ultimaFila + 1 + i; // Desplazar las líneas debajo del título
+            hojaCertificado.getCell(`B${fila}`).value = linea;
+            hojaCertificado.getCell(`B${fila}`).font = { bold: false, underline: false };
+            hojaCertificado.getCell(`B${fila}`).alignment = { horizontal: 'left' };
+          });
+
+          ultimaFila += mensaje.length; // Actualizar la fila final
+
+        }
+
       });
 
       // Crear el directorio de salida si no existe

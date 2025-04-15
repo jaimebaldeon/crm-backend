@@ -1,7 +1,7 @@
 const { getAlbaranesAceptadosByMonth, getClientByContract } = require('../services/albaranesService');
 const { getAlbaranesConFactura, saveFactura, generateFacturaDocument, getFacturasByClientId, updateFactura } = require('../services/facturasService');
 const { saveCertificado, generateCertificadoDocument, getCertificadosByClientId, updateCertificado } = require('../services/certificadosService');
-const { getExtintores, getProvinciaProveedor } = require('../services/extintoresService');
+const { getExtintores, getOtrosActivos } = require('../services/extintoresService');
 
 exports.generateCertificados = async (req, res) => {
     const month = req.query.month;
@@ -17,6 +17,7 @@ exports.generateCertificados = async (req, res) => {
       for (const albaran of albaranesAceptados) {
         const client = await getClientByContract(albaran)
         const extintores = await getExtintores(albaran.id_contrato)
+        const otrosActivos = await getOtrosActivos(albaran.id_contrato)
 
           // BORRAR: Detector Excepciones
         //   if (client.nombre.includes('MIGUEL BECERRO')) {
@@ -32,7 +33,7 @@ exports.generateCertificados = async (req, res) => {
         }
         
         // Generate certificado
-        const certificadoNumber = await generateCertificadoDocument(albaran, extintores, client, idCertificado);
+        const certificadoNumber = await generateCertificadoDocument(albaran, extintores, otrosActivos, client, idCertificado);
       }
 
       // Initialize the message variable
