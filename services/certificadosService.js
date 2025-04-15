@@ -2,6 +2,8 @@ const pool = require('../config/db');
 const fs = require('fs-extra');
 const path = require('path');
 const ExcelJS = require('exceljs');
+const PizZip = require('pizzip');
+const Docxtemplater = require('docxtemplater');
 const { getDate } = require('../utils/documentHelpers');
 const { getProvinciaProveedor } = require('../services/extintoresService');
 
@@ -41,7 +43,7 @@ exports.saveCertificado = async (albaran) => {
 
 
 // Generate an albaran document and save it to a directory
-exports.generateCertificadoDocument = async (albaran, extintores, otrosActivos, client, idCertificado) => {
+exports.generateCertificadoDocumentExcel = async (albaran, extintores, otrosActivos, client, idCertificado) => {
     try {
       // Load the XLSX template file
       const templatePath = path.join(__dirname, '../templates/plantilla_certificado.xlsx');
@@ -199,9 +201,55 @@ exports.generateCertificadoDocument = async (albaran, extintores, otrosActivos, 
       return idCertificado;
 
     } catch (error) {
-      console.error('Error generating certificado document:', error);
-      throw new Error('Failed to generate certificado document');
+      console.error('Error generating certificado excel document:', error);
+      throw new Error('Failed to generate certificado excel document');
     }
+}
+
+exports.generateCertificadoDocumentWord = async (albaran, extintores, otrosActivos, client, idCertificado) => {
+  try {
+    // Load the Word template file
+    const templatePath = path.join(__dirname, '../templates/plantilla_certificado.docx');
+    const content = fs.readFileSync(templatePath, 'binary');
+  
+    // Inicializar PizZip y Docxtemplater
+    const zip = new PizZip(content);
+    const doc = new Docxtemplater(zip, {
+      paragraphLoop: true,
+      linebreaks: true,
+    });
+
+    // Obtener fecha actual
+    const [day, month, year] = getDate();
+
+    // Datos a reemplazar en la plantilla
+    doc.setData({
+      MMYYYYMMYYYY: `${month.toUpperCase()} ${year} ${month.toUpperCase()} ${year + 1}`,               
+      N: client.nombre,       
+      D1: client.direccion,         
+      D2: `${client.cp} - ${client.ciudad}`,
+    });
+
+    // Renderizar el documento
+    doc.render();
+  
+    // Crear el directorio de salida si no existe
+    const outputDirectory = path.join(__dirname, `../certificados/${year}/${albaran.mes}`);
+    await fs.ensureDir(outputDirectory);
+    const outputPath = path.join(outputDirectory, `certificado_${client.nombre}_${client.id_cliente}.docx`);
+
+    // Guardar el archivo generado
+    const buffer = doc.getZip().generate({ type: 'nodebuffer' });
+    fs.writeFileSync(outputPath, buffer);
+
+    console.log(`Certificado generated and saved at: ${outputPath}`);
+    return outputPath;
+
+
+  } catch (error) {
+    console.error('Error generating certificado word document:', error);
+    throw new Error('Failed to generate certificado word document');
+  }
 }
 
 // Fetch certificados for a specific search from the database

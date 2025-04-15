@@ -1,6 +1,6 @@
 const { getAlbaranesAceptadosByMonth, getClientByContract } = require('../services/albaranesService');
 const { getAlbaranesConFactura, saveFactura, generateFacturaDocument, getFacturasByClientId, updateFactura } = require('../services/facturasService');
-const { saveCertificado, generateCertificadoDocument, getCertificadosByClientId, updateCertificado } = require('../services/certificadosService');
+const { saveCertificado, generateCertificadoDocumentExcel, generateCertificadoDocumentWord, getCertificadosByClientId, updateCertificado } = require('../services/certificadosService');
 const { getExtintores, getOtrosActivos } = require('../services/extintoresService');
 
 exports.generateCertificados = async (req, res) => {
@@ -33,7 +33,8 @@ exports.generateCertificados = async (req, res) => {
         }
         
         // Generate certificado
-        const certificadoNumber = await generateCertificadoDocument(albaran, extintores, otrosActivos, client, idCertificado);
+        const certificadoNumber = await generateCertificadoDocumentExcel(albaran, extintores, otrosActivos, client, idCertificado);
+        const certificadoNum = await generateCertificadoDocumentWord(albaran, extintores, otrosActivos, client, idCertificado);
       }
 
       // Initialize the message variable
