@@ -38,7 +38,7 @@ exports.generateCertificados = async (req, res) => {
       }
 
       // Initialize the message variable
-      let message = `Certificados de ${month} generadas correctamente.\n`;
+      let message = `Certificados de ${month} generados correctamente.\n`;
 
       // Notify about skipped clients
       if (clientesIncorrectos.length > 0) {
