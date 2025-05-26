@@ -116,7 +116,7 @@ async function deriveMaintenance(activosCliente) {
           const fabricationYear = parseInt(row_activo.fecha_fabricacion, 10);
           const caducado = fabricationYear && (currentYear - fabricationYear) >= 20;
           const retimbrado = row_activo.fecha_retimbrado === null 
-            ? false 
+            ? ((fabricationYear && (currentYear - fabricationYear) >= 5) ? true : false) 
             : (currentYear - parseInt(row_activo.fecha_retimbrado, 10)) >= 5;
           const nuevo = fabricationYear === currentYear;
   
