@@ -189,7 +189,7 @@ exports.generateCertificadoDocumentExcel = async (albaran, extintores, otrosActi
       });
 
       // Crear el directorio de salida si no existe
-      const outputDirectory = path.join(__dirname, `../certificados/${year}/${albaran.mes}`);
+      const outputDirectory = path.join(__dirname, `../../certificados/${year}/${albaran.mes}`);
       await fs.ensureDir(outputDirectory);
       const outputPath = path.join(outputDirectory, `certificado_${client.nombre}_${client.id_cliente}.xlsx`);
   
@@ -234,7 +234,7 @@ exports.generateCertificadoDocumentWord = async (albaran, extintores, otrosActiv
     doc.render();
   
     // Crear el directorio de salida si no existe
-    const outputDirectory = path.join(__dirname, `../certificados/${year}/${albaran.mes}`);
+    const outputDirectory = path.join(__dirname, `../../certificados/${year}/${albaran.mes}`);
     await fs.ensureDir(outputDirectory);
     const outputPath = path.join(outputDirectory, `certificado_${client.nombre}_${client.id_cliente}.docx`);
 

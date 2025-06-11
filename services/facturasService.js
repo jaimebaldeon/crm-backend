@@ -150,7 +150,7 @@ exports.generateFacturaDocument = async (albaran, client, idFactura) => {
       });
 
       // Crear el directorio de salida si no existe
-      const outputDirectory = path.join(__dirname, `../facturas/${year}/${albaran.mes}`);
+      const outputDirectory = path.join(__dirname, `../../facturas/${year}/${albaran.mes}`);
       await fs.ensureDir(outputDirectory);
       const outputPath = path.join(outputDirectory, `factura_${client.nombre}_${client.id_cliente}.xlsx`);
   
