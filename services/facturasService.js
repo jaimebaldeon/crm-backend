@@ -105,7 +105,7 @@ exports.generateFacturaDocument = async (albaran, client, idFactura) => {
       const direccion = client.direccion_facturacion.split(';');
       hojaFactura.getCell('C15').value = direccion[0]; // Calle y número
       hojaFactura.getCell('C16').value = direccion[2]; // Código postal
-      hojaFactura.getCell('D16').value = direccion[1]; // Ciudad
+      hojaFactura.getCell('D16').value = `${direccion[1]} - ${direccion[3]}`; // Ciudad
       hojaFactura.getCell('H16').value = client.cif;
 
       // Insertar datos de productos y servicios

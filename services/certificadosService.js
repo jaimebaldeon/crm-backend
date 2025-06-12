@@ -72,12 +72,12 @@ exports.generateCertificadoDocumentExcel = async (albaran, extintores, otrosActi
       
         hojaCertificado.getCell(`A${fila}`).value = index + 1;
         hojaCertificado.getCell(`B${fila}`).value = extintor.marca_modelo || '';
-        hojaCertificado.getCell(`C${fila}`).value = provincia || '';
-        hojaCertificado.getCell(`D${fila}`).value = extintor.n_identificador || '';
-        hojaCertificado.getCell(`E${fila}`).value = extintor.tipo || '';
-        hojaCertificado.getCell(`F${fila}`).value = extintor.eficacia || '';
-        hojaCertificado.getCell(`G${fila}`).value = extintor.fecha_fabricacion || '';
-        hojaCertificado.getCell(`H${fila}`).value = extintor.fecha_retimbrado || '';
+        // hojaCertificado.getCell(`C${fila}`).value = provincia || '';
+        hojaCertificado.getCell(`C${fila}`).value = extintor.n_identificador || '';
+        hojaCertificado.getCell(`D${fila}`).value = extintor.tipo || '';
+        hojaCertificado.getCell(`E${fila}`).value = extintor.eficacia || '';
+        hojaCertificado.getCell(`F${fila}`).value = extintor.fecha_fabricacion || '';
+        hojaCertificado.getCell(`G${fila}`).value = extintor.fecha_retimbrado || '';
 
         if (extintor.fecha_retimbrado && Number(extintor.fecha_retimbrado) === year) {
           contadorRetimbrados++;
